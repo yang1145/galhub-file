@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>下载文件 - {{ alias or filename }} - GalHub</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f5f5f5; }
+        .container { max-width: 600px; margin: 100px auto; background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center; }
+        h1 { color: #333; }
+        .file-info { margin: 20px 0; padding: 15px; background-color: #f9f9f9; border-radius: 4px; text-align: left; }
+        .file-info p { margin: 10px 0; }
+        .download-btn { display: inline-block; padding: 15px 30px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 4px; font-size: 18px; margin: 20px 0; }
+        .download-btn:hover { background-color: #45a049; }
+        .back-link { margin-top: 20px; }
+        .back-link a { color: #4CAF50; text-decoration: none; }
+        .back-link a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>文件下载</h1>
+        
+        <div class="file-info">
+            <p><strong>文件名:</strong> {{ filename }}</p>
+            {% if alias %}
+            <p><strong>别名:</strong> {{ alias }}</p>
+            {% endif %}
+        </div>
+        
+        <a href="{{ url_for('serve_file', file_id=id) }}" class="download-btn">点击下载</a>
+        
+        <div class="back-link">
+            <a href="{{ url_for('index') }}">返回文件列表</a>
+        </div>
+    </div>
+</body>
+</html>

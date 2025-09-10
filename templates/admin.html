@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员面板 - GalHub</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f5f5f5; }
+        .container { max-width: 1000px; margin: 0 auto; background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; text-align: center; }
+        .upload-section { background-color: #f9f9f9; padding: 20px; border-radius: 8px; margin-bottom: 30px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="text"], input[type="file"] { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        button { background-color: #4CAF50; color: white; padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        button:hover { background-color: #45a049; }
+        .delete-btn { background-color: #f44336; padding: 6px 12px; font-size: 14px; }
+        .delete-btn:hover { background-color: #d32f2f; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #4CAF50; color: white; }
+        tr:hover { background-color: #f5f5f5; }
+        .message { color: green; text-align: center; margin: 10px 0; }
+        .error { color: red; text-align: center; margin: 10px 0; }
+        .logout-link { float: right; color: #f44336; text-decoration: none; }
+        .logout-link:hover { text-decoration: underline; }
+        .back-link { margin-bottom: 20px; }
+        .back-link a { color: #4CAF50; text-decoration: none; }
+        .back-link a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="back-link">
+            <a href="{{ url_for('index') }}">返回首页</a>
+            <a href="{{ url_for('admin_login') }}" class="logout-link">退出登录</a>
+        </div>
+        
+        <h1>管理员面板</h1>
+        
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="message">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <div class="upload-section">
+            <h2>上传文件</h2>
+            <form method="POST" action="{{ url_for('upload_file') }}" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="file">选择文件:</label>
+                    <input type="file" id="file" name="file" required>
+                </div>
+                <div class="form-group">
+                    <label for="alias">文件别名 (可选):</label>
+                    <input type="text" id="alias" name="alias">
+                </div>
+                <button type="submit">上传</button>
+            </form>
+        </div>
+        
+        <h2>文件管理</h2>
+        {% if files %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>文件名</th>
+                        <th>别名</th>
+                        <th>上传时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for file in files %}
+                    <tr>
+                        <td>{{ file[1] }}</td>
+                        <td>{{ file[2] or '无' }}</td>
+                        <td>{{ file[3] }}</td>
+                        <td>
+                            <a href="{{ url_for('download', file_id=file[0]) }}">下载</a>
+                            <a href="{{ url_for('delete_file', file_id=file[0]) }}" 
+                               onclick="return confirm('确定要删除这个文件吗？')">删除</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>暂无文件</p>
+        {% endif %}
+    </div>
+</body>
+</html>
