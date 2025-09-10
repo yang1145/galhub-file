@@ -4,3 +4,7 @@ Werkzeug==2.3.7
 
 # Password hashing
 bcrypt==4.0.1
+
+# Build tools (optional)
+# Required for building executable files with build.py
+PyInstaller==5.13.0

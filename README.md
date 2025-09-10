@@ -40,6 +40,34 @@ python app.py
 
 应用默认运行在 `http://127.0.0.1:5000`
 
+## 构建和打包
+
+项目包含一个构建脚本 [build.py](file:///d%3A/documents/code/galhub-file/build.py)，可用于打包项目为exe可执行文件。
+
+### 构建EXE可执行文件
+
+```bash
+python build.py
+```
+
+该命令将执行以下操作：
+1. 检查并安装 PyInstaller（如果尚未安装）
+2. 创建 spec 配置文件
+3. 构建带控制台的 Windows 可执行文件
+4. 复制必要文件到 dist 目录
+5. 创建便携式 ZIP 包
+
+构建完成后，你将获得：
+- `dist/galhub-file.exe` - 主可执行文件（带控制台）
+- `dist/templates/` - HTML 模板目录
+- `dist/files.db` - 数据库文件
+- `dist/config.py` - 配置文件
+- 便携式 ZIP 包，包含所有必要文件
+
+### 运行EXE文件
+
+构建完成后，可以直接运行 `dist/galhub-file.exe` 启动应用，控制台窗口将保持开启状态，便于查看日志信息。
+
 ## 使用说明
 
 ### 访问主页
@@ -105,6 +133,7 @@ python app.py
 ```
 galhub-file/
 ├── app.py              # 主应用文件
+├── build.py            # 构建脚本
 ├── config.py           # 配置文件
 ├── requirements.txt    # 依赖列表
 ├── README.md           # 说明文档
