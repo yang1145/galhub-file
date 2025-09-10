@@ -3,32 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>管理员登录 - GalHub</title>
+    <title>上传文件 - GalHub</title>
     <style>
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0; 
             padding: 0; 
-            background: linear-gradient(135deg, #2c3e50, #4a6491);
+            background-color: #f8f9fa; 
             color: #333;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        }
+        .navbar {
+            background: linear-gradient(135deg, #2c3e50, #4a6491);
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .navbar a {
+            float: left;
+            display: block;
+            color: #fff;
+            text-align: center;
+            padding: 16px 20px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .navbar a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .navbar a.active {
+            background-color: #4CAF50;
+        }
+        .navbar-right {
+            float: right;
         }
         .container {
-            width: 100%;
-            max-width: 450px;
+            max-width: 700px;
+            margin: 30px auto;
             background-color: #fff;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
         }
         h1 {
             color: #2c3e50;
             text-align: center;
             margin-top: 0;
-            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
         }
         .form-group {
             margin-bottom: 25px;
@@ -39,16 +59,16 @@
             font-weight: 600;
             color: #495057;
         }
-        input[type="text"], input[type="password"] {
+        input[type="text"], input[type="file"] {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             border: 1px solid #ced4da;
             border-radius: 4px;
             box-sizing: border-box;
             font-size: 16px;
             transition: border-color 0.3s;
         }
-        input[type="text"]:focus, input[type="password"]:focus {
+        input[type="text"]:focus, input[type="file"]:focus {
             border-color: #4CAF50;
             outline: none;
             box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
@@ -56,7 +76,7 @@
         button {
             background: linear-gradient(135deg, #4CAF50, #45a049);
             color: white;
-            padding: 16px;
+            padding: 14px 24px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
@@ -64,7 +84,6 @@
             font-weight: 600;
             width: 100%;
             transition: background 0.3s;
-            margin-top: 10px;
         }
         button:hover {
             background: linear-gradient(135deg, #45a049, #3d8b40);
@@ -86,17 +105,16 @@
             border-radius: 4px;
         }
         .back-link {
+            display: block;
             text-align: center;
             margin-top: 25px;
-        }
-        .back-link a {
             color: #6c757d;
             text-decoration: none;
         }
-        .back-link a:hover {
+        .back-link:hover {
             color: #495057;
         }
-        .login-icon {
+        .upload-icon {
             text-align: center;
             font-size: 60px;
             color: #4CAF50;
@@ -105,9 +123,18 @@
     </style>
 </head>
 <body>
+    <div class="navbar">
+        <a href="{{ url_for('admin_panel') }}">管理员面板</a>
+        <a href="{{ url_for('upload_file_page') }}" class="active">上传文件</a>
+        <div class="navbar-right">
+            <a href="{{ url_for('change_password') }}">修改密码</a>
+            <a href="{{ url_for('admin_logout') }}">退出登录</a>
+        </div>
+    </div>
+    
     <div class="container">
-        <div class="login-icon">🔐</div>
-        <h1>管理员登录</h1>
+        <div class="upload-icon">📁</div>
+        <h1>上传文件</h1>
         
         {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -117,21 +144,19 @@
             {% endif %}
         {% endwith %}
         
-        <form method="POST">
+        <form method="POST" action="{{ url_for('upload_file') }}" enctype="multipart/form-data">
             <div class="form-group">
-                <label for="username">用户名:</label>
-                <input type="text" id="username" name="username" required autofocus>
+                <label for="file">选择文件:</label>
+                <input type="file" id="file" name="file" required>
             </div>
             <div class="form-group">
-                <label for="password">密码:</label>
-                <input type="password" id="password" name="password" required>
+                <label for="alias">文件别名 (可选):</label>
+                <input type="text" id="alias" name="alias" placeholder="为文件设置一个易于识别的名称">
             </div>
-            <button type="submit">登录</button>
+            <button type="submit">上传文件</button>
         </form>
         
-        <div class="back-link">
-            <a href="{{ url_for('index') }}">← 返回首页</a>
-        </div>
+        <a href="{{ url_for('admin_panel') }}" class="back-link">← 返回管理员面板</a>
     </div>
 </body>
 </html>

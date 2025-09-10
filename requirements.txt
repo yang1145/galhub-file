@@ -1,2 +1,6 @@
+# Flask web framework
 Flask==2.3.3
 Werkzeug==2.3.7
+
+# Password hashing
+bcrypt==4.0.1
